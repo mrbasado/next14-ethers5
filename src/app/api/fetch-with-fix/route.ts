@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 
-// curl -X GET "localhost:3000/api/fetch-gas" -H "accept: application/json"
+// curl -X GET "localhost:3000/api/fetch-with-fix" -H "accept: application/json"
 export async function GET() {
   const sepoliaKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_SEPOLIA!;
   const mainnetKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_MAINNET!;
@@ -10,7 +10,7 @@ export async function GET() {
 
   const mainnetRPC = `https://eth-mainnet.g.alchemy.com/v2/${mainnetKey}`;
   console.log('mainnet rpc', mainnetRPC);
-  const mainnetProvider = new ethers.providers.JsonRpcProvider(mainnetRPC);
+  const mainnetProvider = new ethers.providers.JsonRpcProvider({ skipFetchSetup: true, url: mainnetRPC});
   const mainnetBlock = await mainnetProvider.getBlockNumber();
   console.log('mainnetBlock', mainnetBlock);
 
@@ -20,7 +20,7 @@ export async function GET() {
 
   console.log('sepolia rpc', sepoliaRPC);
   
-  const sepoliaProvider = new ethers.providers.JsonRpcProvider(sepoliaRPC);
+  const sepoliaProvider = new ethers.providers.JsonRpcProvider({ skipFetchSetup: true, url: sepoliaRPC});
   // const provider = new ethers.providers.AlchemyProvider("sepolia", sepoliaRPC);
 
   const sepoliaBlock = await sepoliaProvider.getBlockNumber();
